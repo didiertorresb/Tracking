@@ -48,17 +48,16 @@ public class TrackingMode extends ActionBarActivity {
     }
     public void googleMapsGPS (View View) {
 
-       // EditText numberfrecucy = (EditText) findViewById(R.id.freUpdNumber);
-
-
-        //if (numberfrecucy.getText() != null) {
+        EditText numberfrecucy = (EditText) findViewById(R.id.freUpdNumber);
+        if (numberfrecucy.getText() != null) {
             //mesaage for selection frecuency update
-        //    Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
+         Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
 
-        //} else {
-        //    int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
+        } else {
+        int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
 
         //location GPS
+
         final double latitudegps;
         double longitudegps;
         boolean gpsAct;
@@ -109,7 +108,7 @@ public class TrackingMode extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "Active your GPS, Please", Toast.LENGTH_LONG).show();
         }
 
-        //}
+        }
 
     }
 
