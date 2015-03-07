@@ -29,9 +29,19 @@
         android:layout_height="wrap_content"
         android:text="Last locations"
         android:id="@+id/locations"
-        android:layout_alignParentBottom="true"
+        android:onClick="lastLocations"
+        android:layout_centerVertical="true"
+        android:layout_alignStart="@+id/mode" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Exit"
+        android:id="@+id/button2"
+        android:singleLine="true"
+        android:layout_below="@+id/locations"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="146dp"
-        android:onClick="lastLocations"/>
+        android:layout_marginTop="86dp" />
 
 </RelativeLayout>

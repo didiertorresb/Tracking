@@ -1,28 +1,46 @@
 package com.informatiquemobile.tracking;
 
 import android.content.Context;
-import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.CompoundButton;
+import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity {
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        ToggleButton acgps = (ToggleButton) findViewById(R.id.actgps);
+        acgps.setOnCheckedChangeListener (new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    // Enable MyLocation Layer of Google Map
+                    mMap.setMyLocationEnabled(true);
+                }else{
+                    // Enable MyLocation Layer of Google Map
+                    mMap.setMyLocationEnabled(false);
+                }
+            }
+        });
+
     }
 
     @Override
@@ -66,24 +84,22 @@ public class MapsActivity extends FragmentActivity {
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
-        // Enable MyLocation Layer of Google Map
-        mMap.setMyLocationEnabled(true);
-
-        // set map type
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-
         double latitude = getIntent().getDoubleExtra("latitudemap",RESULT_OK);
         double longitude = getIntent().getDoubleExtra("longitudemap",RESULT_OK);
+ // set map type
+            mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        // Create a LatLng object for the current location
-        LatLng latLng = new LatLng(latitude, longitude);
+            // Create a LatLng object for the current location
+            LatLng latLng = new LatLng(latitude, longitude);
 
-        // Show the current location in Google Map
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+            // Show the current location in Google Map
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
 
-        // Zoom in the Google Map
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(3));
-        mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!"));
-    }
+            // Zoom in the Google Map
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(3));
+            mMap.addMarker(new MarkerOptions().position(new LatLng(latitude, longitude)).title("You are here!"));
+
+
+  }
 }
 

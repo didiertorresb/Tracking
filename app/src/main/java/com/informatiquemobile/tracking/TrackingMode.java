@@ -2,7 +2,6 @@ package com.informatiquemobile.tracking;
 
 import android.content.Context;
 import android.content.Intent;
-import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -11,8 +10,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-
-import com.google.android.gms.maps.GoogleMap;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 public class TrackingMode extends ActionBarActivity {
@@ -47,85 +48,75 @@ public class TrackingMode extends ActionBarActivity {
     }
     public void googleMapsGPS (View View) {
 
+       // EditText numberfrecucy = (EditText) findViewById(R.id.freUpdNumber);
+
+
+        //if (numberfrecucy.getText() != null) {
+            //mesaage for selection frecuency update
+        //    Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
+
+        //} else {
+        //    int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
+
         //location GPS
         final double latitudegps;
         double longitudegps;
-
+        boolean gpsAct;
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        final Location gpsstart = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (gpsstart != null) {
-            latitudegps = gpsstart.getLatitude();
-            longitudegps = gpsstart.getLongitude();
-        } else {
-            latitudegps = 0;
-            longitudegps = 0;
+        gpsAct = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        //if GPS is activite
+        if (gpsAct) {
+            final Location gpsstart = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if (gpsstart != null) {
+                latitudegps = gpsstart.getLatitude();
+                longitudegps = gpsstart.getLongitude();
+            } else {
+                latitudegps = 2;
+                longitudegps = -72;
+            }
+            LocationListener loclistener = new LocationListener() {
+
+                @Override
+                public void onLocationChanged(Location location) {
+                    double    latitudegps = gpsstart.getLatitude();
+                    double    longitudegps = gpsstart.getLongitude();
+                }
+
+                @Override
+                public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                }
+
+                @Override
+                public void onProviderEnabled(String provider) {
+
+                }
+
+                @Override
+                public void onProviderDisabled(String provider) {
+
+                }
+            };
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 60, 10, loclistener);
+
+            Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
+            intent.putExtra("vsIA", false);
+            intent.putExtra("latitudemap", latitudegps);
+            intent.putExtra("longitudemap", longitudegps);
+            startActivity(intent);
+
+        }else{
+            Toast.makeText(getApplicationContext(), "Active your GPS, Please", Toast.LENGTH_LONG).show();
         }
-        LocationListener loclistener = new LocationListener() {
 
-            @Override
-            public void onLocationChanged(Location location) {
-                double latitudegps = gpsstart.getLatitude();
-                double longitudegps = gpsstart.getLongitude();
-            }
+        //}
 
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 60, 10, loclistener);
-/*
-        // lancer map
-
-        // Get LocationManager object from System Service LOCATION_SERVICE
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        // Create a criteria object to retrieve provider
-        Criteria criteria = new Criteria();
-
-        // Get the name of the best provider
-        String provider = locationManager.getBestProvider(criteria, true);
-
-        // Get Current Location
-        Location myLocation = locationManager.getLastKnownLocation(provider);
-
-        // Get latitude of the current location
-        double latitudegps = myLocation.getLatitude();
-
-        // Get longitude of the current location
-        double longitudegps = myLocation.getLongitude();
-*/
-
-    Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
-        intent.putExtra("vsIA", false);
-        intent.putExtra("latitudemap",latitudegps);
-        intent.putExtra("longitudemap",longitudegps);
-        startActivity(intent);
     }
-    public void googleMapsWIFI (View View) {
-        double latitudewifi = 0;
-        double longitudewifi = 0;
-        Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
-        intent.putExtra("vsIA", false);
-        intent.putExtra("latitudemap",latitudewifi);
-        intent.putExtra("longitudemap",longitudewifi);
 
-        startActivity(intent);
-    }
     public void googleMapsGSM (View View) {
         double latitudewifi = 2;
         double longitudewifi = -72;
-        Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
+        Intent intent = new Intent(TrackingMode.this, MapsActivityCellular.class);
         intent.putExtra("vsIA", false);
         intent.putExtra("latitudemap",latitudewifi);
         intent.putExtra("longitudemap",longitudewifi);

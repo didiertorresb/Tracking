@@ -46,6 +46,10 @@
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+        <activity android:name="com.informatiquemobile.tracking.MapsActivityCellular"
+            android:label="@string/title_activity_maps_activity_cellular">
+
+        </activity>
         <activity
             android:name=".DataBase"
             android:label="@string/title_activity_data_base" >
