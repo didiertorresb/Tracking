@@ -46,80 +46,90 @@ public class TrackingMode extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void googleMapsGPS (View View) {
+
+    public void googleMapsGPS(View View) {
 
         EditText numberfrecucy = (EditText) findViewById(R.id.freUpdNumber);
-        if (numberfrecucy.getText() != null) {
+        if (numberfrecucy.getText().length() == 0) {
             //mesaage for selection frecuency update
-         Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
 
         } else {
-        int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
+            int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
 
-        //location GPS
+            //location GPS
 
-        final double latitudegps;
-        double longitudegps;
-        boolean gpsAct;
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        gpsAct = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        //if GPS is activite
-        if (gpsAct) {
-            final Location gpsstart = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            if (gpsstart != null) {
-                latitudegps = gpsstart.getLatitude();
-                longitudegps = gpsstart.getLongitude();
+            final double latitudegps;
+            double longitudegps;
+            boolean gpsAct;
+            LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            gpsAct = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            //if GPS is activite
+            if (gpsAct) {
+                final Location gpsstart = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (gpsstart != null) {
+                    latitudegps = gpsstart.getLatitude();
+                    longitudegps = gpsstart.getLongitude();
+                } else {
+                    latitudegps = 2;
+                    longitudegps = -72;
+                }
+                LocationListener loclistener = new LocationListener() {
+
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        double latitudegps = gpsstart.getLatitude();
+                        double longitudegps = gpsstart.getLongitude();
+                    }
+
+                    @Override
+                    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String provider) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String provider) {
+
+                    }
+                };
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 60*numfrup, 10, loclistener);
+
+                Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
+                intent.putExtra("vsIA", false);
+                intent.putExtra("latitudemap", latitudegps);
+                intent.putExtra("longitudemap", longitudegps);
+                startActivity(intent);
+
             } else {
-                latitudegps = 2;
-                longitudegps = -72;
+                Toast.makeText(getApplicationContext(), "Active your GPS, Please", Toast.LENGTH_LONG).show();
             }
-            LocationListener loclistener = new LocationListener() {
 
-                @Override
-                public void onLocationChanged(Location location) {
-                    double    latitudegps = gpsstart.getLatitude();
-                    double    longitudegps = gpsstart.getLongitude();
-                }
+        }
 
-                @Override
-                public void onStatusChanged(String provider, int status, Bundle extras) {
+    }
 
-                }
+    public void googleMapsGSM(View View) {
 
-                @Override
-                public void onProviderEnabled(String provider) {
+        EditText numberfrecucy = (EditText) findViewById(R.id.freUpdNumber);
+        if (numberfrecucy.getText().length() == 0) {
+            //mesaage for selection frecuency update
+            Toast.makeText(getApplicationContext(), "Enter a frequency of updating of position, Please", Toast.LENGTH_LONG).show();
 
-                }
-
-                @Override
-                public void onProviderDisabled(String provider) {
-
-                }
-            };
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 60, 10, loclistener);
-
-            Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
+        } else {
+            int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
+            double latitudewifi = 2;
+            double longitudewifi = -72;
+            Intent intent = new Intent(TrackingMode.this, MapsActivityCellular.class);
             intent.putExtra("vsIA", false);
-            intent.putExtra("latitudemap", latitudegps);
-            intent.putExtra("longitudemap", longitudegps);
+            intent.putExtra("latitudemap", latitudewifi);
+            intent.putExtra("longitudemap", longitudewifi);
             startActivity(intent);
-
-        }else{
-            Toast.makeText(getApplicationContext(), "Active your GPS, Please", Toast.LENGTH_LONG).show();
-        }
-
         }
 
     }
-
-    public void googleMapsGSM (View View) {
-        double latitudewifi = 2;
-        double longitudewifi = -72;
-        Intent intent = new Intent(TrackingMode.this, MapsActivityCellular.class);
-        intent.putExtra("vsIA", false);
-        intent.putExtra("latitudemap",latitudewifi);
-        intent.putExtra("longitudemap",longitudewifi);
-        startActivity(intent);
-    }
-
 }
