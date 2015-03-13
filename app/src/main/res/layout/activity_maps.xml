@@ -14,46 +14,17 @@
     android:id="@+id/map"
     tools:context="com.informatiquemobile.tracking.MapsActivity"
     android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/searchView2" />
-
-    <SearchView
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchView"
-        android:queryHint="Start Location"
-        android:layout_alignParentTop="true"
-        android:longClickable="false" />
-
-    <SearchView
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/searchView2"
-        android:layout_below="@+id/searchView"
-        android:queryHint="End Location" />
+        android:layout_below="@+id/endLocation" />
 
     <Button
-        style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Exit"
-        android:id="@+id/exit"
-        android:singleLine="true"
-        android:layout_alignTop="@+id/searchView2"
-        android:layout_alignEnd="@+id/map"
-        android:layout_toEndOf="@+id/searchView2"
-        android:layout_alignStart="@+id/actgps"/>
-
-    <ToggleButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New ToggleButton"
-        android:id="@+id/actgps"
-        android:layout_alignTop="@+id/searchView"
-        android:layout_alignParentEnd="true"
-        android:textAllCaps="false"
-        android:textIsSelectable="false"
-        android:drawableLeft="@drawable/gps1" />
+        android:text="Stop Tracking"
+        android:id="@+id/endLocation"
+        android:onClick="onBackPressed"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

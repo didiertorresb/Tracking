@@ -8,4 +8,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_data_base">DataBase</string>
     <string name="title_activity_maps_activity_cellular">Map</string>
+    <string name="title_activity_mode_gps">ModeGps</string>
+    <string name="title_activity_read_db">ReadDb</string>
 </resources>

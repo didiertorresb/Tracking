@@ -1,6 +1,8 @@
 package com.informatiquemobile.tracking;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
@@ -57,54 +59,15 @@ public class TrackingMode extends ActionBarActivity {
         } else {
             int numfrup = Integer.parseInt(numberfrecucy.getText().toString());
 
-            //location GPS
-
-            final double latitudegps;
-            double longitudegps;
             boolean gpsAct;
             LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             gpsAct = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             //if GPS is activite
             if (gpsAct) {
-                final Location gpsstart = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                if (gpsstart != null) {
-                    latitudegps = gpsstart.getLatitude();
-                    longitudegps = gpsstart.getLongitude();
-                } else {
-                    latitudegps = 2;
-                    longitudegps = -72;
-                }
-                LocationListener loclistener = new LocationListener() {
-
-                    @Override
-                    public void onLocationChanged(Location location) {
-                        double latitudegps = gpsstart.getLatitude();
-                        double longitudegps = gpsstart.getLongitude();
-                    }
-
-                    @Override
-                    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-                    }
-
-                    @Override
-                    public void onProviderEnabled(String provider) {
-
-                    }
-
-                    @Override
-                    public void onProviderDisabled(String provider) {
-
-                    }
-                };
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000 * 60*numfrup, 10, loclistener);
-
-                Intent intent = new Intent(TrackingMode.this, MapsActivity.class);
+                Intent intent = new Intent(TrackingMode.this, ModeGps.class);
                 intent.putExtra("vsIA", false);
-                intent.putExtra("latitudemap", latitudegps);
-                intent.putExtra("longitudemap", longitudegps);
+                intent.putExtra("frecuencyupdate",numfrup);
                 startActivity(intent);
-
             } else {
                 Toast.makeText(getApplicationContext(), "Active your GPS, Please", Toast.LENGTH_LONG).show();
             }
@@ -131,5 +94,17 @@ public class TrackingMode extends ActionBarActivity {
             startActivity(intent);
         }
 
+    }
+    public  void exitClick(){
+        new AlertDialog.Builder(this)
+                .setMessage("Do you want to exit?")
+                .setCancelable(false)
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        TrackingMode.this.finish();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 }
